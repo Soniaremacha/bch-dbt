@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: bch
+    description: "Public Bitcoin Cash dataset in BigQuery (pre-processed, human-friendly)."
+    database: bigquery-public-data
+    schema: crypto_bitcoin_cash
+
+    loaded_at_field: block_timestamp
+    freshness:
+      warn_after: {count: 365, period: day}
+      error_after: {count: 2000, period: day}
+
+    tables:
+      - name: transactions
+        description: "One row per transaction; includes block_timestamp and is_coinbase."
+        columns:
+          - name: hash
+            description: "Transaction hash (puede tener duplicados en la fuente pública)."
+            tests:
+              - unique:
+                  config:
+                    severity: warn
+          - name: block_timestamp
+            tests: [not_null]
+
+      - name: outputs
+        description: "Transaction outputs (value in satoshis; addresses is an array)."
+        columns:
+          - name: transaction_hash
+            tests: [not_null]
+          - name: value
+            tests: [not_null]
+          - name: addresses
+            description: "Array of addresses that receive this output."
+            tests: [not_null]
+
+      - name: inputs
+        description: "Transaction inputs; reference previous outputs via spent_* fields."
+        columns:
+          - name: spent_transaction_hash
+          - name: spent_output_index

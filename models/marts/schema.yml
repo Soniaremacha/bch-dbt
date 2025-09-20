@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: address_current_balance
+    description: "Current balance per address (UTXOs), excluding addresses with any coinbase tx."
+    columns:
+      - name: address
+        tests: [not_null, unique]
+      - name: balance_bch
+        tests: [not_null]

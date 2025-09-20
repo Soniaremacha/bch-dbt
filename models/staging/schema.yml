@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg_bch_transactions_last_3m
+    description: "Transactions in the 3-month rolling window from the last available block date. Dedupe by hash."
+    columns:
+      - name: tx_hash
+        tests: [not_null, unique]
+      - name: block_timestamp
+        tests: [not_null]
