@@ -52,6 +52,8 @@ GitHub repo: `Owner/Repo` (e.g., `Soniaremacha/bch-dbt`).
 │  └─ marts/
 │     ├─ address_current_balance.sql
 │     └─ schema.yml
+├─ macros/
+│  └─ generate_schema_name.sql      # (optional) avoid duplicate schema names
 ├─ requirements.txt                 # Python deps (dbt-bigquery)
 └─ .github/workflows/dbt-pr.yml     # CI on PRs
 
